@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "prettier",
+    "airbnb",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "node": true,
+    "es6": true,
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "import/no-unresolved": "off",
+    "semi": [2, "never"],
+    "arrow-parens": [2, "as-needed"],
+    "react/jsx-props-no-spreading": "off",
+    "jsx-a11y/label-has-associated-control": [ 2, {
+      "controlComponents": ["TextField"],
+      "labelComponents": ["StyledLabel"],
+      "labelAttributes": ["label"],
+      "depth": 3
+    }],
+    "no-unused-expressions": "off"
+  }
+}
