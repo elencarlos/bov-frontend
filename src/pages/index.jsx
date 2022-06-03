@@ -1,6 +1,6 @@
 import Home from './Home'
 import Detail from './Detail'
-import Form from './Form'
+import Form from './CheckListForm'
 
 export {
   Home,

@@ -1,6 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig, loadEnv } from 'vite'
-// eslint-disable-next-line import/no-extraneous-dependencies
 import react from '@vitejs/plugin-react'
 
 export default ({ mode }) => {
@@ -8,6 +6,7 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [react()],
     server: {
+      port: process.env.VITE_PORT || 3000,
       proxy: {
         '/api': {
           target: process.env.VITE_API_URL,
