@@ -1,13 +1,24 @@
 import React from 'react'
-import logo from './assets/bov-platform.svg'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Footer, Header } from './components'
+import { Detail, Form, Home } from './pages'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} alt="logo" />
-      </header>
-    </div>
+    <>
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/home" component={Home} />
+          <Route path="/detail/:id?" component={Detail} />
+          <Route path="/form/:id?" component={Form} />
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
+      <Footer />
+    </>
   )
 }
 

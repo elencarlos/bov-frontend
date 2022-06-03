@@ -9,4 +9,9 @@ export default createGlobalStyle`
   html {
     --white: #ffffff;
   }
+  
+  body {
+    font-family: 'Roboto',sans-serif;
+    text-decoration: none;
+  }
 `
