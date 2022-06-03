@@ -2,17 +2,35 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import {
+  Container,
+  Form,
+  Input,
+  Label,
+  PrimaryTitle,
+  UnderlineTitle,
+  SubmitButton,
+} from './style'
 
-const schema = yup.object({
-  firstName: yup.string()
-    .required(),
-  age: yup.number()
-    .required()
-    .positive()
-    .integer(),
-  website: yup.string()
-    .url(),
-})
+const schema = yup
+  .object({
+    type: yup.string(),
+    amountOfMilkProduced: yup.number().positive().integer(),
+    numberOfCowsHead: yup.number().positive().integer(),
+    farmer: yup.object().shape({
+      name: yup.string(),
+      city: yup.string(),
+    }),
+    from: yup.object().shape({
+      name: yup.string(),
+    }),
+    to: yup.object().shape({
+      name: yup.string(),
+    }),
+    hadSupervision: yup.number(),
+    latitude: yup.number(),
+    longitude: yup.number(),
+  })
   .required()
 
 export default function CheckListForm() {
@@ -51,29 +69,68 @@ export default function CheckListForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Container>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <PrimaryTitle>
+          Cadastro de CheckList
+          <UnderlineTitle />
+        </PrimaryTitle>
+        <div style={{ display: 'flex', justifyContent: 'stretch', gap: '20px' }}>
+          <div style={{ width: '50%' }}>
+            <div>
+              <Label>Tipo do checklist</Label>
+              <Input {...register('type')} />
+              {errors.type && <p>{errors.type.message}</p>}
+            </div>
+            <div>
+              <Label>Nome do Fazendeiro</Label>
+              <Input {...register('from')} />
+              {errors.from && <p>{errors.from.message}</p>}
+            </div>
+            <div>
+              <Label>Nome do Fazenda</Label>
+              <Input {...register('farmer.name')} />
+              {errors.farmer && errors.farmer.name && (
+                <p>{errors.farmer.name.message}</p>
+              )}
+            </div>
+            <div>
+              <Label>Cidade do Fazenda</Label>
+              <Input {...register('farmer.city')} />
+              {errors.farmer && errors.farmer.city && (
+                <p>{errors.farmer.city.message}</p>
+              )}
+            </div>
+            <div>
+              <Label>Quantidade de leite produzida no mês</Label>
+              <Input {...register('amountOfMilkProduced')} />
+              {errors.amountOfMilkProduced && (
+                <p>{errors.amountOfMilkProduced.message}</p>
+              )}
+            </div>
+            <div>
+              <Label>Quantidade de cabeça de gado</Label>
+              <Input {...register('numberOfCowsHead')} />
+              {errors.numberOfCowsHead && <p>{errors.numberOfCowsHead.message}</p>}
+            </div>
+            <div>
+              <Label>Teve supervisão no mês em curso</Label>
+              <Input {...register('hadSupervision')} />
+              {errors.hadSupervision && <p>{errors.hadSupervision.message}</p>}
+            </div>
+            <div>
+              <Label>Supervisor</Label>
+              <Input {...register('to')} />
+              {errors.to && <p>{errors.to.message}</p>}
+            </div>
+          </div>
+          <div style={{ width: '50%' }}>
+            Escolha no mapa a localização
 
-      <div>
-        <label>First Name</label>
-        <input {...register('firstName')} />
-        {errors.firstName && <p>{errors.firstName.message}</p>}
-      </div>
-      <div style={{ marginBottom: 10 }}>
-        <label>Last Name</label>
-        <input {...register('lastName')} />
-        {errors.lastName && <p>{errors.lastName.message}</p>}
-      </div>
-      <div>
-        <label>Age</label>
-        <input type="number" {...register('age', { valueAsNumber: true })} />
-        {errors.age && <p>{errors.age.message}</p>}
-      </div>
-      <div>
-        <label>Website</label>
-        <input {...register('website')} />
-        {errors.website && <p>{errors.website.message}</p>}
-      </div>
-      <input type="submit" />
-    </form>
+          </div>
+        </div>
+        <SubmitButton type="submit" />
+      </Form>
+    </Container>
   )
 }

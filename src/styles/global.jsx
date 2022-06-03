@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
+import { COLORS } from '../constants/theme'
 
 export default createGlobalStyle`
   ${reset}
@@ -11,7 +12,9 @@ export default createGlobalStyle`
   }
   
   body {
-    font-family: 'Roboto',sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
     text-decoration: none;
   }
 `
