@@ -1,3 +1,4 @@
 import { createContext } from 'react'
 
-export const CheckListContext = createContext()
+const CheckListContext = createContext()
+export default CheckListContext

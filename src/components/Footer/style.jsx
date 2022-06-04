@@ -6,14 +6,15 @@ const Container = styled.footer`
   justify-content: center;
   justify-items: center;
   align-items: center;
-  align-self: flex-end;
-  justify-self: flex-end;
-  width: 100%;
-  height: 30px;
-  clear: both;
-  position: relative;
+  position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+  height: 30px;
   color: ${COLORS.white};
   background-color: ${COLORS.primary};
+  margin-top: auto;
 `
 export default Container
