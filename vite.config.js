@@ -7,7 +7,7 @@ export default ({ mode }) => {
     base: '/bov-frontend/',
     plugins: [react()],
     server: {
-      port: process.env.VITE_PORT || 3000,
+      port: process.env.VITE_PORT || 80,
       proxy: {
         '/api': {
           target: process.env.VITE_API_URL,
