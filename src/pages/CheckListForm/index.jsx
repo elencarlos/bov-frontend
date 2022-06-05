@@ -94,16 +94,6 @@ export default function CheckListForm() {
       getCheckListHandler(id)
     }
     getCheckListsHandler()
-    reset({
-      type: 'BPA',
-      amountOfMilkProduced: null,
-      numberOfCowsHead: null,
-      farmer: null,
-      from: null,
-      to: null,
-      hadSupervision: true,
-      location: position,
-    })
     setValue('location.latitude', center[0])
     setValue('location.longitude', center[1])
   }, [])
@@ -141,6 +131,7 @@ export default function CheckListForm() {
   )
 
   const onSubmit = data => {
+    console.log(data)
     let checkListId
     if (isNewCheckList) {
       checkListId = checkLists.reduce((maxId, item) => (item._id > maxId ? item._id : maxId), 1) + 1

@@ -41,7 +41,7 @@ export default (state, action) => {
     case 'DELETE_CHECK_LIST':
       return {
         ...state,
-        message: action.payload,
+        checkLists: [...state.checkLists.filter(checkList => checkList._id !== action.payload)],
       }
     default:
       return state

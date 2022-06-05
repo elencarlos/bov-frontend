@@ -109,7 +109,7 @@ export const deleteCheckList = async (dispatch, id) => {
       console.log(res)
       dispatch({
         type: 'DELETE_CHECK_LIST',
-        payload: 'Check List deletado com sucesso',
+        payload: id,
       })
     })
     .catch(error => {
