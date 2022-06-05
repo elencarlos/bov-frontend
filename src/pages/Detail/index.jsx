@@ -83,37 +83,37 @@ export default function Detail() {
               <Item>
                 <ItemLabel>Tipo do checklist</ItemLabel>
                 <ItemData>
-                  {checkList.type}
+                  {checkList?.type}
                 </ItemData>
               </Item>
               <Item>
                 <ItemLabel>Nome do Fazendeiro</ItemLabel>
-                <ItemData>{checkList.from?.name}</ItemData>
+                <ItemData>{checkList?.from?.name}</ItemData>
               </Item>
               <Item>
                 <ItemLabel>Nome do Fazenda</ItemLabel>
-                <ItemData>  {checkList.farmer?.name}</ItemData>
+                <ItemData>  {checkList?.farmer?.name}</ItemData>
               </Item>
               <Item>
                 <ItemLabel>Cidade do Fazenda</ItemLabel>
-                <ItemData>{checkList.farmer?.city}</ItemData>
+                <ItemData>{checkList?.farmer?.city}</ItemData>
               </Item>
               <Item>
                 <ItemLabel>Quantidade de leite produzida no mês</ItemLabel>
-                <ItemData>{checkList.amount_of_milk_produced}</ItemData>
+                <ItemData>{checkList?.amount_of_milk_produced}</ItemData>
               </Item>
               <Item>
                 <ItemLabel>Quantidade de cabeça de gado</ItemLabel>
-                <ItemData>{checkList.number_of_cows_head}</ItemData>
+                <ItemData>{checkList?.number_of_cows_head}</ItemData>
               </Item>
               <Item>
                 <ItemLabel htmlFor='hadSupervision'>Teve supervisão no mês em curso</ItemLabel>
-                <ItemData>{checkList.hadSupervision?"Sim":"Não"}</ItemData>
+                <ItemData>{checkList?.hadSupervision?"Sim":"Não"}</ItemData>
               </Item>
               <Item>
                 <ItemLabel>Supervisor</ItemLabel>
                 <ItemData>
-                  {checkList.to?.name}
+                  {checkList?.to?.name}
                 </ItemData>
               </Item>
             </div>
