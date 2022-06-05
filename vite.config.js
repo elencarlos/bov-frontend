@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react'
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
   return defineConfig({
-    base: '/bov-frontend/',
     plugins: [react()],
     server: {
       port: process.env.VITE_PORT || 80,
