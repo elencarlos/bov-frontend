@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Detail, CheckListForm, Home } from './pages'
+import { CheckListForm, Detail, Home } from './pages'
 
 export default function Routes() {
   return (

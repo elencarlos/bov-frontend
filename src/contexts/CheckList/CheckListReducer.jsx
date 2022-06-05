@@ -16,10 +16,32 @@ export default (state, action) => {
         error: action.payload.error,
         message: action.payload.message,
       }
+    case 'CLEAR_CHECK_LIST':
+      return {
+        ...state,
+        checkList: null,
+      }
     case 'SET_LOADING':
       return {
         ...state,
         loading: action.payload,
+      }
+    case 'CREATE_CHECK_LIST':
+      return {
+        ...state,
+        message: action.payload,
+        checkList: null,
+      }
+    case 'UPDATE_CHECK_LIST':
+      return {
+        ...state,
+        message: action.payload,
+        checkList: null,
+      }
+    case 'DELETE_CHECK_LIST':
+      return {
+        ...state,
+        message: action.payload,
       }
     default:
       return state

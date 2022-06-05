@@ -1,17 +1,26 @@
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import moment from 'moment'
 import {
-  Container, Form, Input, Label, PrimaryTitle, SubmitButton, UnderlineTitle,
+  Container, Form, Input, Label, Select, SubmitButton,
 } from './style'
 import 'leaflet/dist/leaflet.css'
 import { useCheckList } from '../../contexts/CheckList/CheckListState'
-import { getCheckList, setLoading } from '../../contexts/CheckList/CheckListAction'
+import {
+  createCheckList,
+  getCheckList,
+  getCheckLists,
+  setLoading,
+  updateCheckList,
+} from '../../contexts/CheckList/CheckListAction'
+import Button from '../../components/Button'
+import PageTitle from '../../components/PageTitle/PageTitle'
 
 const schema = yup
   .object({
@@ -38,10 +47,8 @@ const schema = yup
     hadSupervision: yup.number(),
     location: yup.object()
       .shape({
-        latitude: yup.number()
-          .required(),
-        longitude: yup.number()
-          .required(),
+        latitude: yup.number(),
+        longitude: yup.number(),
       }),
   })
   .required()
@@ -58,7 +65,7 @@ export default function CheckListForm() {
   } = useForm({
     resolver: yupResolver(schema),
   })
-  const onSubmit = data => console.log(data)
+  const history = useHistory()
   const [position, setPosition] = useState(center)
   const { id } = useParams()
   const isNewCheckList = !id
@@ -66,6 +73,7 @@ export default function CheckListForm() {
   const [checkListState, checkListDispatch] = useCheckList()
   const {
     checkList,
+    checkLists,
     loading,
     error,
     message,
@@ -76,10 +84,28 @@ export default function CheckListForm() {
     setLoading(checkListDispatch, false)
   }
 
+  const getCheckListsHandler = async () => {
+    await getCheckLists(checkListDispatch)
+    setLoading(checkListDispatch, false)
+  }
+
   useEffect(() => {
     if (id) {
       getCheckListHandler(id)
     }
+    getCheckListsHandler()
+    reset({
+      type: 'BPA',
+      amountOfMilkProduced: null,
+      numberOfCowsHead: null,
+      farmer: null,
+      from: null,
+      to: null,
+      hadSupervision: true,
+      location: position,
+    })
+    setValue('location.latitude', center[0])
+    setValue('location.longitude', center[1])
   }, [])
 
   useEffect(() => {
@@ -91,9 +117,12 @@ export default function CheckListForm() {
         farmer: { ...checkList.farmer },
         from: { ...checkList.from },
         to: { ...checkList.to },
-        hadSupervision: checkList.had_supervision,
+        hadSupervision: checkList.had_supervision ? '1' : '0',
         location: checkList.location,
       })
+      if (checkList.location) {
+        setPosition([checkList.location.latitude, checkList.location.longitude])
+      }
     }
   }, [checkList])
 
@@ -111,25 +140,77 @@ export default function CheckListForm() {
     [],
   )
 
+  const onSubmit = data => {
+    let checkListId
+    if (isNewCheckList) {
+      checkListId = checkLists.reduce((maxId, item) => (item._id > maxId ? item._id : maxId), 1) + 1
+    } else {
+      checkListId = checkList.id
+    }
+    const hidratedData = {
+      id: checkListId.toString(),
+      type: data.type,
+      amount_of_milk_produced: data.amountOfMilkProduced,
+      number_of_cows_head: data.numberOfCowsHead,
+      had_supervision: data.hadSupervision === 1,
+      farmer: {
+        ...data.farmer,
+      },
+      from: {
+        ...data.from,
+      },
+      to: {
+        ...data.to,
+      },
+      location: {
+        ...data.location,
+      },
+      created_at: moment().toISOString(),
+      updated_at: moment().toISOString(),
+    }
+    if (isNewCheckList) {
+      const dataToSend = {
+        checklists: [
+          { ...hidratedData },
+        ],
+      }
+      console.log(dataToSend)
+      createCheckList(checkListDispatch, dataToSend)
+      history.push('/')
+    } else {
+      console.log(hidratedData)
+      updateCheckList(checkListDispatch, hidratedData, checkListId)
+      history.push('/')
+    }
+  }
+
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
         {loading && <p>Carregando...</p>}
         {error && <p>{message}</p>}
-        <PrimaryTitle>
-          Cadastro de CheckList
-          <UnderlineTitle />
-        </PrimaryTitle>
+        <PageTitle title="Cadastro de Check List">
+          <Link to="/">
+            <Button type="button">Voltar</Button>
+          </Link>
+        </PageTitle>
         <div style={{
           display: 'flex',
           justifyContent: 'stretch',
           gap: '20px',
         }}
         >
-          <div style={{ width: '50%' }}>
+          <div style={{
+            display: 'flex', width: '50%', gap: '20px', flexDirection: 'column',
+          }}
+          >
             <div>
               <Label>Tipo do checklist</Label>
-              <Input {...register('type')} />
+              <Select {...register('type')}>
+                <option value="BPA">BPA</option>
+                <option value="Antibiotico">Antibiótico</option>
+                <option value="BPF">BPF</option>
+              </Select>
               {errors.type && <p>{errors.type.message}</p>}
             </div>
             <div>
@@ -164,8 +245,16 @@ export default function CheckListForm() {
               {errors.numberOfCowsHead && <p>{errors.numberOfCowsHead.message}</p>}
             </div>
             <div>
-              <Label>Teve supervisão no mês em curso</Label>
-              <Input {...register('hadSupervision')} />
+              <Label htmlFor="hadSupervision">Teve supervisão no mês em curso</Label>
+              <div style={{
+                display: 'flex', justifyContent: 'flex-start', flexDirection: 'row', gap: '5px',
+              }}
+              >
+                <Label htmlFor="hadSupervision_true">Sim</Label>
+                <input id="hadSupervision" type="radio" {...register('hadSupervision')} value="1" />
+                <Label htmlFor="hadSupervision_false">Não</Label>
+                <input id="hadSupervision_false" type="radio" {...register('hadSupervision')} value="0" />
+              </div>
               {errors.hadSupervision && <p>{errors.hadSupervision.message}</p>}
             </div>
             <div>
@@ -175,20 +264,10 @@ export default function CheckListForm() {
             </div>
           </div>
           <div style={{ width: '50%' }}>
-            Escolha no mapa a localização
-            {position && position.lat
-              ? (
-                <p>
-                  latitude:
-                  {' '}
-                  {position.lat.toFixed(4)}
-                  , longitude:
-                  {' '}
-                  {position.lng.toFixed(4)}
-                  {' '}
-                </p>
-              ) : ''}
-            <MapContainer center={center} zoom={5} scrollWheelZoom={false}>
+            <Label>
+              Escolha no mapa a localização
+            </Label>
+            <MapContainer center={position} zoom={5} scrollWheelZoom={false}>
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

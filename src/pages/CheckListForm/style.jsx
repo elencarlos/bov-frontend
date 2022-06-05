@@ -41,6 +41,14 @@ const Input = styled.input`
   padding: 12px 16px;
   border-radius: 5px;  
 `
+const Select = styled.select`
+  display: block;
+  box-sizing: border-box;
+  border: 1px solid ${COLORS.gray};
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 5px;  
+`
 
 const Label = styled.label`
   line-height: 1;
@@ -79,4 +87,5 @@ export {
   PrimaryTitle,
   UnderlineTitle,
   SubmitButton,
+  Select,
 }

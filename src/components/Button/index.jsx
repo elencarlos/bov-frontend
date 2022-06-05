@@ -1,10 +1,11 @@
 import React from 'react'
+import { StyledPrimaryButton } from './style'
 
 function Button(props) {
   // eslint-disable-next-line react/prop-types
   const { children, ...rest } = props
   return (
-    <button type="button" {...rest}>{children}</button>
+    <StyledPrimaryButton type="button" {...rest}>{children}</StyledPrimaryButton>
   )
 }
 

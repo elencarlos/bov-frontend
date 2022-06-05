@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
-import { COLORS } from '../constants/theme'
 
 export default createGlobalStyle`
   ${reset}
