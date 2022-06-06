@@ -21,6 +21,8 @@ import {
 } from '../../contexts/CheckList/CheckListAction'
 import Button from '../../components/Button'
 import PageTitle from '../../components/PageTitle/PageTitle'
+import 'leaflet/dist/images/marker-shadow.png'
+import 'leaflet/dist/images/marker-icon.png'
 
 const schema = yup
   .object({
@@ -165,11 +167,9 @@ export default function CheckListForm() {
           { ...hidratedData },
         ],
       }
-      console.log(dataToSend)
       createCheckList(checkListDispatch, dataToSend)
       history.push('/')
     } else {
-      console.log(hidratedData)
       updateCheckList(checkListDispatch, hidratedData, checkListId)
       history.push('/')
     }
