@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 const apiUrl = import.meta.env.VITE_API_URL
-const url = import.meta.env.MODE!=='development' ? `${apiUrl}/api` : '/api'
-console.log(import.meta.env.MODE)
+const url = import.meta.env.MODE!=='development' ? `${apiUrl}` : '/api'
 const http = axios.create({
   baseURL: url,
 })
