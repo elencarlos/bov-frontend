@@ -17,7 +17,7 @@
 # Run with docker
 install docker, docker compose
 
-    docker-compose up
+    docker compose up
 
 
 
